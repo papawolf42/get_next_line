@@ -6,7 +6,7 @@
 /*   By: gunkim <papawolf@kakao.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:17:09 by gunkim            #+#    #+#             */
-/*   Updated: 2020/10/28 21:00:11 by gunkim           ###   ########.fr       */
+/*   Updated: 2020/10/29 21:54:21 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-# define BUFFER_SIZE=32
+# define BUFFER_SIZE 32
 
 int		get_next_line(int fd, char **line);
 
