@@ -6,107 +6,111 @@
 /*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 20:44:21 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/10 10:50:34 by gunkim           ###   ########.fr       */
+/*   Updated: 2020/11/17 01:07:54 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_has_newline(char *buff)
+ssize_t ft_lstfree(t_lst *lsthead, t_lst_befreed target)
 {
-	size_t			idx_nl;
-	
-	idx_nl = 0;
-	if (buff == NULL)
-		return (0);
-	while (buff[idx_nl])
+	t_lst		*lst;
+
+	lst = lsthead;
+	if (target == all)
 	{
-		if (buff[idx_nl++] == '\n')
-			return (idx_nl);
+		while (lst)
+		{
+//			ft_bzero(lst->buff, ft_strchr(lst->buff, '\0'));
+			free(lst->buff);
+			lst = lst->next;
+		}
 	}
+	else if (target == without_tail)
+	{
+		while (lst->next)
+		{
+//			ft_bzero(lst->buff, ft_strchr(lst->buff, '\0'));
+			free(lst->buff);
+			lst = lst->next;
+		}
+	}
+	return (-1);
+}
+
+ssize_t	ft_lstinit(t_lst **lsthead, t_lst **lsttail)
+{
+	if (!*lsttail)
+		if (!(*lsthead = (*lsttail = ft_lstnew())))
+			return (-1);
+	*lsthead = *lsttail;
+//	if (0 < ft_strchr((*lsttail)->buff, '\n'))
+//		return (0);
+	if (!((*lsttail)->next = ft_lstnew()))
+		return (ft_lstfree(*lsthead, all));
+	*lsttail = (*lsttail)->next;
 	return (0);
 }
 
-int		ft_split(t_list *lstback, char **backup, size_t idx_nl)
+ssize_t	ft_link(char **line, t_lst *lsthead)
 {
-//	char	*buff;
-	size_t	len;
+	ssize_t		linelen;
 
-//	buff = lstback->buff;
-//	buff[idx_nl - 1] = '\0';
-	len = ft_strlen(lstback->buff) - idx_nl; // 4 - 3 = 1
-	if (!(*backup = (char *)malloc(len + 1)))
+	linelen = ft_lstlen(lsthead);
+	if (!(*line = (char *)malloc(linelen + 1)))
+		return (ft_lstfree(lsthead, all));
+	ft_lstcpy(*line, lsthead);
+	return (1); // 예외처리 필요.
+}
+
+ssize_t	ft_split(char **line, t_lst *lsthead, t_lst *lsttail)
+{
+	char	*tmp;
+	ssize_t	idx;
+
+	tmp = lsttail->buff;
+	if (0 < (idx = ft_strchr(tmp, '\n')))
+	{
+		if (!(tmp = (char *)malloc(ft_strchr(tmp, '\0') - idx + 1)))
+			return(ft_lstfree(lsthead, all));
+		ft_strcpy(tmp, lsttail->buff + idx - 1);
+		ft_link(line, lsthead);
+		ft_lstfree(lsthead, without_tail);
+		free(lsttail->buff);
+		lsttail->buff = tmp;
 		return (1);
-	(*backup)[len] = '\0';
-	ft_strlcat(*backup , lstback->buff + idx_nl, len + 1);
-	lstback->buff[idx_nl - 1] = '\0';
+	}
+/*	if (*tmp)
+	{
+		ft_link(line, lsthead);
+		ft_lstfree(lsthead, without_tail);
+		return (1);
+	}*/
+	ft_link(line, lsthead);
+	ft_lstfree(lsthead, all);
 	return (0);
-}
-
-size_t	ft_lstlen(t_list *lst)
-{
-	size_t	len_tatal;
-
-	len_tatal = 0;
-	if (lst->buff == NULL) // 가장 처음 호출 돼었을 때, node[0]의 backup이 NULL임.
-		lst = lst->next;
-	while (lst)
-	{
-		len_tatal += ft_strlen(lst->buff);
-		lst = lst->next;
-	}
-	return (len_tatal);
-}
-
-int		ft_process(char **line, t_list *lst_first, size_t idx_nl, ssize_t rbyte)
-{
-	t_list	*lst;
-	size_t	len_total;
-
-	if (!idx_nl && !rbyte)
-		return (0);
-	if (!lst_first->buff)
-		lst_first = lst_first->next;
-	lst = lst_first;
-	len_total = ft_lstlen(lst);
-	if (!(*line = (char *)malloc(len_total + 1)))
-		return (-1);
-	while (lst)
-	{
-		ft_strlcat(*line, lst->buff, len_total + 1);
-		lst = lst->next;
-	}
-	lst = lst_first;
-	while (lst)
-	{
-		free(lst->buff);
-		lst = lst->next;
-	}
-	return (1);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	static char		*backup;
-	char			*buff;
-	ssize_t			rbyte;
-	size_t			idx_nl;
-	t_list			*lstback;
-	t_list			*lstfront;
-	
-	if (!(lstback = (lstfront = ft_lstnew(backup))))
+	t_lst			*lsthead;
+	static t_lst	*lsttail;
+	ssize_t			idx;
+
+	if (fd < 0 || BUFFER_SIZE <= 0 || line == NULL)
 		return (-1);
-	while (!(idx_nl = ft_has_newline(lstback->buff)) &&
-		(buff = (char *)malloc(BUFFER_SIZE + 1)) && 
-		(0 < (rbyte = read(fd, buff, BUFFER_SIZE))))
-		{
-			buff[rbyte] = 0;
-			if(!((lstback)->next = ft_lstnew(buff)))
-				return (-1);
-			lstback = (lstback)->next;
-		}	
-	if (idx_nl > 0)
-		if (ft_split(lstback, &backup, idx_nl))
-			return (-1);
-	return (ft_process(line, lstfront, idx_nl, rbyte));
+	if (-1 == (ft_lstinit(&lsthead, &lsttail)))
+		return (-1);
+	while (0 < (idx = read(fd, lsttail->buff, BUFFER_SIZE)))
+	{
+		lsttail->buff[idx] = '\0';
+		if (0 < ft_strchr(lsttail->buff, '\n'))
+			break;
+		if (!(lsttail->next = ft_lstnew()))
+			return (ft_lstfree(lsthead, all));
+		lsttail = lsttail->next;
+	}
+	if (idx < 0)
+		return (ft_lstfree(lsthead, all));
+	return (ft_split(line, lsthead, lsttail));
 }

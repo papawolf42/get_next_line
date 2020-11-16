@@ -6,49 +6,100 @@
 /*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 20:55:03 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/10 10:50:47 by gunkim           ###   ########.fr       */
+/*   Updated: 2020/11/16 00:03:20 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*ft_lstnew(char *buff)
+/*
+void	ft_bzero(void *b, size_t len)
 {
-	t_list		*lstnew;
+	char	*ptr;
 
-	if (!(lstnew = (t_list *)malloc(sizeof(t_list))))
+	ptr = (char *)b;
+	while (len--)
+		ptr[len] = '\0';
+}
+*/
+
+ssize_t	ft_strchr(char *str, char c) // 1
+{
+	ssize_t	idx;
+
+	idx = 0;
+	if (c == '\0')
+	{
+		while (str[idx])
+			idx++;
+		return (idx);
+	}
+	else if (c == '\n')
+	{
+		while (str[idx])
+		{
+			if (str[idx] == '\n')
+				return (idx + 1);
+			idx++;
+		}
+		return (0);
+	}
+	return (-1);
+}
+
+t_lst	*ft_lstnew() // 2
+{
+	t_lst			*lstnew;
+
+	if (!(lstnew = (t_lst *)malloc(sizeof(t_lst))))
 		return (NULL);
-	lstnew->buff = buff;
+	if (!(lstnew->buff = (char *)malloc(BUFFER_SIZE + 1)))
+	{
+		free(lstnew);
+		return (NULL);
+	}
+	lstnew->buff[BUFFER_SIZE] = '\0';
+	lstnew->buff[0] = '\0';
 	lstnew->next = NULL;
 	return (lstnew);
 }
 
-size_t	ft_strlen(char *s)
+ssize_t	ft_lstlen(t_lst *lst) // 3 : ft_link
 {
-	size_t		len;
+	ssize_t	strlen;
 
-	if (!s)
-		return (0);
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	strlen = 0;
+	while(lst)
+	{
+		strlen += ft_strchr(lst->buff, '\0');
+		lst = lst->next;
+	}
+	return (strlen);
 }
 
-size_t	ft_strlcat(char *dst, char *src, size_t size)
+void	ft_lstcpy(char *dst, t_lst *lst) // 4 : ft_link
 {
-	size_t		s;
-	size_t		d;
+	char *src;
 
-	s = 0;
-	d = ft_strlen(dst);
-	if (size <= d)
-		return (ft_strlen(src) + size);
-	while (src[s] && (d + s + 1 < size))
+	while (lst)
 	{
-		dst[d + s] = src[s];
-		s++;
+		src = lst->buff;
+		while (*src)
+		{
+			*dst++ = *src;
+			*src++ = '\0';
+		}
+		lst = lst->next;
 	}
-	dst[d + s] = '\0';
-	return (s + ft_strlen(src + s) + d);
+	*dst = '\0';
+}
+
+void	ft_strcpy(char *dst, char *src) // 5 : ft_link
+{
+	*src++ = '\0';
+	while (*src)
+	{
+		*dst++ = *src++;
+	}
+	*dst = '\0';
 }

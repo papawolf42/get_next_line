@@ -6,7 +6,7 @@
 /*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:17:09 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/10 10:51:40 by gunkim           ###   ########.fr       */
+/*   Updated: 2020/11/17 00:47:42 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,42 @@
 #  define BUFFER_SIZE 4
 # endif
 
-typedef struct		s_list
+typedef enum
+{
+	all,
+	without_tail
+}	t_lst_befreed;
+
+typedef struct		s_lst
 {
 	char			*buff;
-	struct s_list	*next;
-}					t_list;
+	struct s_lst	*next;
+}					t_lst;
 
-// gnl_util
-t_list				*ft_lstnew(char *buff);
-size_t				ft_strlen(char *s);
-size_t				ft_strlcat(char *dst, char *src, size_t size);
+/*
+** - gnl_util
+*/
 
-// gnl
-size_t				ft_has_newline(char *buff);
-int					ft_split(t_list *lstback, char **backup, size_t idx_nl);
-size_t				ft_lstlen(t_list *lst);
-int					ft_process(char **line, t_list *lst_first, size_t idx_nl, ssize_t rbyte);
+ssize_t				ft_strchr(char *str, char c);
+t_lst				*ft_lstnew();
+ssize_t				ft_lstlen(t_lst *lst);
+void				ft_lstcpy(char *dst, t_lst *lst);
+void				ft_strcpy(char *dst, char *src);
+
+/*
+** - gnl
+*/
+
+ssize_t				ft_lstfree(t_lst *lsthead, t_lst_befreed target);
+ssize_t				ft_lstinit(t_lst **lsthead, t_lst **lsttail);
+ssize_t				ft_link(char **line, t_lst *lsthead);
+ssize_t				ft_split(char **line, t_lst *lsthead, t_lst *lsttail);
 int					get_next_line(int fd, char **line);
 
-// main
-//int					main_gnl(void);
+/*
+** - main
+*/
+
+int					main(void);
 
 #endif
