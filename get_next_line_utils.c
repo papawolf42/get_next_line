@@ -6,24 +6,13 @@
 /*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 20:55:03 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/17 22:43:59 by gunkim           ###   ########.fr       */
+/*   Updated: 2020/11/19 13:59:20 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*
-void	ft_bzero(void *b, size_t len)
-{
-	char	*ptr;
-
-	ptr = (char *)b;
-	while (len--)
-		ptr[len] = '\0';
-}
-*/
-
-ssize_t	ft_strchr(char *str, char c) // 1
+ssize_t	ft_strchr(char *str, char c)
 {
 	ssize_t	idx;
 
@@ -47,7 +36,7 @@ ssize_t	ft_strchr(char *str, char c) // 1
 	return (-1);
 }
 
-t_lst	*ft_lstnew() // 2
+t_lst	*ft_lstnew(void)
 {
 	t_lst			*lstnew;
 
@@ -64,12 +53,12 @@ t_lst	*ft_lstnew() // 2
 	return (lstnew);
 }
 
-ssize_t	ft_lstlen(t_lst *lst) // 3 : ft_link
+ssize_t	ft_lstlen(t_lst *lst)
 {
 	ssize_t	strlen;
 
 	strlen = 0;
-	while(lst)
+	while (lst)
 	{
 		strlen += ft_strchr(lst->buff, '\0');
 		lst = lst->next;
@@ -77,7 +66,7 @@ ssize_t	ft_lstlen(t_lst *lst) // 3 : ft_link
 	return (strlen);
 }
 
-void	ft_lstcpy(char *dst, t_lst *lst) // 4 : ft_link
+void	ft_lstcpy(char *dst, t_lst *lst)
 {
 	char *src;
 
@@ -94,7 +83,7 @@ void	ft_lstcpy(char *dst, t_lst *lst) // 4 : ft_link
 	*dst = '\0';
 }
 
-void	ft_strcpy(char *dst, char *src) // 5 : ft_link
+void	ft_strcpy(char *dst, char *src)
 {
 	*src++ = '\0';
 	while (*src)

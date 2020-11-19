@@ -6,7 +6,7 @@
 /*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:17:09 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/18 00:57:57 by gunkim           ###   ########.fr       */
+/*   Updated: 2020/11/19 14:00:25 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef enum
 {
 	all,
 	without_tail
-}	t_lst_befreed;
+}	t_range;
 
 typedef struct		s_lst
 {
@@ -48,16 +48,10 @@ void				ft_strcpy(char *dst, char *src);
 ** - gnl
 */
 
-ssize_t				ft_lstfree(t_lst *lsthead, t_lst **lsttail, t_lst_befreed target);
+ssize_t				ft_lstfree(t_lst *lsthead, t_lst **lsttail, t_range range);
 ssize_t				ft_lstinit(t_lst **lsthead, t_lst **lsttail);
 ssize_t				ft_link(char **line, t_lst *lsthead, t_lst **lsttail);
 ssize_t				ft_split(char **line, t_lst *lsthead, t_lst **lsttail);
 int					get_next_line(int fd, char **line);
-
-/*
-** - main
-*/
-
-//int					main(void);
 
 #endif
