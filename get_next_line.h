@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gunkim <gunkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:17:09 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/19 14:00:25 by gunkim           ###   ########.fr       */
+/*   Updated: 2021/06/28 01:19:25 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ typedef struct		s_lst
 ** - gnl_util
 */
 
-ssize_t				ft_strchr(char *str, char c);
-t_lst				*ft_lstnew();
+ssize_t				ft_strchr_gnl(char *str, char c);
+t_lst				*ft_lstnew_gnl();
 ssize_t				ft_lstlen(t_lst *lst);
 void				ft_lstcpy(char *dst, t_lst *lst);
 void				ft_strcpy(char *dst, char *src);
@@ -51,7 +51,7 @@ void				ft_strcpy(char *dst, char *src);
 ssize_t				ft_lstfree(t_lst *lsthead, t_lst **lsttail, t_range range);
 ssize_t				ft_lstinit(t_lst **lsthead, t_lst **lsttail);
 ssize_t				ft_link(char **line, t_lst *lsthead, t_lst **lsttail);
-ssize_t				ft_split(char **line, t_lst *lsthead, t_lst **lsttail);
+ssize_t				ft_split_gnl(char **line, t_lst *lsthead, t_lst **lsttail);
 int					get_next_line(int fd, char **line);
 
 #endif

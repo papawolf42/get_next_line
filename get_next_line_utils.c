@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gunkim <gunkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 20:55:03 by gunkim            #+#    #+#             */
-/*   Updated: 2020/11/19 13:59:20 by gunkim           ###   ########.fr       */
+/*   Updated: 2021/06/28 01:19:14 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-ssize_t	ft_strchr(char *str, char c)
+ssize_t	ft_strchr_gnl(char *str, char c)
 {
 	ssize_t	idx;
 
@@ -36,7 +36,7 @@ ssize_t	ft_strchr(char *str, char c)
 	return (-1);
 }
 
-t_lst	*ft_lstnew(void)
+t_lst	*ft_lstnew_gnl(void)
 {
 	t_lst			*lstnew;
 
@@ -60,7 +60,7 @@ ssize_t	ft_lstlen(t_lst *lst)
 	strlen = 0;
 	while (lst)
 	{
-		strlen += ft_strchr(lst->buff, '\0');
+		strlen += ft_strchr_gnl(lst->buff, '\0');
 		lst = lst->next;
 	}
 	return (strlen);
