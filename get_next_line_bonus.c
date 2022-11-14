@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gunkim <gunkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 20:44:21 by gunkim            #+#    #+#             */
-/*   Updated: 2021/06/28 01:19:25 by gunkim           ###   ########.fr       */
+/*   Updated: 2022/11/14 22:15:41 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ ssize_t	ft_split_gnl(char **line, t_lst *lsthead, t_lst **lsttail)
 	{
 		if (!(tmp = (char *)malloc(ft_strchr_gnl(tmp, '\0') - idx + 1)))
 			return (ft_lstfree(lsthead, lsttail, all));
-		ft_strcpy(tmp, (*lsttail)->buff + idx - 1);
+		ft_strcpy_gnl(tmp, (*lsttail)->buff + idx - 1);
 		ft_link(line, lsthead, lsttail);
 		ft_lstfree(lsthead, lsttail, without_tail);
 		free((*lsttail)->buff);

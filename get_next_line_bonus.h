@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gunkim <gunkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 19:17:09 by gunkim            #+#    #+#             */
-/*   Updated: 2021/06/28 01:19:25 by gunkim           ###   ########.fr       */
+/*   Updated: 2022/11/14 22:15:41 by gunkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ ssize_t				ft_strchr_gnl(char *str, char c);
 t_lst				*ft_lstnew_gnl();
 ssize_t				ft_lstlen(t_lst *lst);
 void				ft_lstcpy(char *dst, t_lst *lst);
-void				ft_strcpy(char *dst, char *src);
+void				ft_strcpy_gnl(char *dst, char *src);
 
 /*
 ** - gnl
